@@ -4,6 +4,22 @@ import type { Finding, Rule, ScanContext } from '../types.js';
 const NETWORK_INSTRUCTION =
   /\b(?:curl|wget|fetch|http\.get|requests\.(?:get|post)|urllib|Invoke-WebRequest)\b/i;
 
+/**
+ * Prose that merely mentions curl is not an instruction to fetch. Only fenced
+ * code blocks and command-like lines count as actionable network instructions.
+ */
+function hasActionableNetworkInstruction(text: string): boolean {
+  const fences = text.match(/```[\s\S]*?```/g) ?? [];
+  const commandLines = text
+    .split('\n')
+    .filter((l) =>
+      /^\s*(?:\$|>|#\s*)*\s*(?:curl|wget|fetch|httpie|Invoke-WebRequest|python[0-9.]*\s+-c|node[0-9.]*\s+-e)\b/i.test(
+        l,
+      ),
+    );
+  return NETWORK_INSTRUCTION.test([...fences, ...commandLines].join('\n'));
+}
+
 /** Prompt-injection-ish patterns: instructions to ignore prior guidance. */
 const INJECTION_PATTERNS: RegExp[] = [
   /ignore (?:all )?(?:previous|prior|above) instructions/i,
@@ -24,7 +40,7 @@ export const skillsRule: Rule = (ctx: ScanContext): Finding[] => {
     if (!text) continue;
     const name = rel.split('/').slice(-2, -1)[0] ?? rel;
 
-    if (NETWORK_INSTRUCTION.test(text)) {
+    if (hasActionableNetworkInstruction(text)) {
       withNetwork++;
       findings.push({
         rule: 'skills.network-access',

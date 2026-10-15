@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/agentvet"><img src="https://img.shields.io/npm/v/agentvet" alt="npm"></a>
   <a href="https://github.com/LucasYanzy/agentvet/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/LucasYanzy/agentvet/ci.yml?branch=main&label=ci" alt="CI"></a>
-  <img src="https://img.shields.io/badge/tests-23%20passing-brightgreen" alt="tests">
+  <img src="https://img.shields.io/badge/tests-33%20passing-brightgreen" alt="tests">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT"></a>
   <img src="https://img.shields.io/badge/network-zero%20requests-gray" alt="no network">
 </p>
