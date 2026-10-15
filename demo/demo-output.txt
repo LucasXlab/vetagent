@@ -1,0 +1,58 @@
+$ agentvet --path demo/fixtures
+
+
+  agentvet  — AI agent setup audit
+
+  Score: F (39/100)   files: 3   targets: 1   9ms
+  Findings: 3 high · 2 medium · 1 low · 1 info
+
+  HIGH (3)
+
+  ▸ OpenAI API key found in plaintext
+    .claude/.mcp.json:11
+    evidence: sk-pro**********ij
+    why: This looks like a live credential. Anyone with read access to this file (or a screenshot of it) can use it.
+    fix: Rotate the key now, then store it in an environment variable or a secret manager.
+
+  ▸ Overly broad permission: Bash(*)
+    .claude/settings.json
+    evidence: Bash(*)
+    why: This permission allows every shell command with no confirmation.
+    fix: Replace with the narrowest pattern that covers your workflow, e.g. Bash(git status:*).
+
+  ▸ MCP server "fetch" has an inline credential in env.API_KEY
+    .claude/.mcp.json
+    evidence: API_KEY: "sk-pro**********ij"
+    why: The credential is stored in plaintext next to the server definition.
+    fix: Reference an environment variable instead: "API_KEY: "${API_KEY}""
+
+  MEDIUM (2)
+
+  ▸ Risky default permission mode: acceptEdits
+    .claude/settings.json
+    evidence: acceptEdits
+    why: This mode auto-accepts all file edits without review.
+    fix: Use the default interactive mode, or scope bypassPermissions to a throwaway container.
+
+  ▸ MCP server "fetch" runs an unpinned package
+    .claude/.mcp.json
+    evidence: uvx mcp-server-fetch
+    why: Without a version pin, every launch can pull a different build. A compromised publish becomes remote code execution on your machine.
+    fix: Pin it: uvx mcp-server-fetch@<exact-version> (check the project's releases for the current version).
+
+  LOW (1)
+
+  ▸ MCP server "filesystem" auto-confirms package installs (-y)
+    .claude/.mcp.json
+    evidence: -y @modelcontextprotocol/server-filesystem@0.6.2 /Users/me/projects
+    why: The -y flag suppresses install prompts, hiding what gets downloaded.
+    fix: Remove -y and install the package explicitly with a pinned version.
+
+  INFO (1)
+
+  ▸ 1 skill scanned, none flagged
+    ~/NO/agentvet/demo/fixtures
+    why: No network instructions or override language detected in your skills.
+    fix: No action needed.
+
+  ⚠ 3 high-severity finding(s). Rotate any exposed credentials now.

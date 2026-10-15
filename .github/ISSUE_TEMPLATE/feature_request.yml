@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest a rule, a platform, or an output format
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Example config it should flag, and the finding it should produce (title / fix).
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before opening, please confirm
+      options:
+        - label: I searched existing issues and this is not a duplicate
+          required: true
+        - label: This keeps agentvet dependency-free at runtime
+          required: true

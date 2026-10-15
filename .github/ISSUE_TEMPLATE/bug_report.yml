@@ -1,0 +1,36 @@
+name: Bug report
+description: agentvet missed something, flagged something wrong, or crashed
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Include the command you ran and the output (secrets will be redacted by the tool, but please double-check before pasting).
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: agentvet version
+      placeholder: "1.0.0 (agentvet --version)"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options: [macOS, Linux, Windows]
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node version
+      placeholder: "node --version"
+  - type: textarea
+    id: config
+    attributes:
+      label: Sanitized config that triggered it
+      description: Remove real keys; keep the structure.
+      render: json

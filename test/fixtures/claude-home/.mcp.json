@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "good-server": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything@0.6.2"]
+    },
+    "unpinned-server": {
+      "command": "npx",
+      "args": ["-y", "some-random-mcp-server"]
+    },
+    "remote-server": {
+      "url": "https://mcp.example.com/sse"
+    },
+    "plain-http": {
+      "url": "http://mcp.example.org/mcp"
+    },
+    "inline-key": {
+      "command": "node",
+      "args": ["server.js"],
+      "env": { "API_KEY": "sk-proj-abcd1234efgh5678ijkl" }
+    }
+  }
+}
