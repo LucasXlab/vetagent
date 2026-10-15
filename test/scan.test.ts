@@ -83,6 +83,28 @@ describe('scanTargets on the project fixture', () => {
   });
 });
 
+describe('scanTargets with --exclude', () => {
+  const full = scanTargets([{ root: fixture('claude-home'), kind: 'claude' }]);
+  const excluded = scanTargets([{ root: fixture('claude-home'), kind: 'claude' }], [
+    'settings.json',
+    'skills/**',
+  ]);
+
+  it('excludes the named file and directory subtree', () => {
+    expect(full.findings.some((f) => f.file === 'settings.json')).toBe(true);
+    expect(excluded.findings.some((f) => f.file === 'settings.json')).toBe(false);
+    expect(excluded.findings.some((f) => f.file.includes('skills/'))).toBe(false);
+  });
+
+  it('keeps findings from non-excluded files', () => {
+    expect(excluded.findings.some((f) => f.file === '.mcp.json')).toBe(true);
+  });
+
+  it('reports fewer scanned files', () => {
+    expect(excluded.stats.filesScanned).toBeLessThan(full.stats.filesScanned);
+  });
+});
+
 describe('makeContext', () => {
   const root = fixture('claude-home');
   const files = walkFiles(root);

@@ -142,3 +142,41 @@ export function walkFiles(root: string, opts: WalkOptions = {}): string[] {
 }
 
 import { readdirSync } from 'node:fs';
+
+/** Convert a glob (*, **, ?) to a RegExp matching a full relative POSIX path. */
+export function globToRegExp(glob: string): RegExp {
+  let re = '';
+  for (let i = 0; i < glob.length; i++) {
+    const c = glob[i];
+    if (c === '*') {
+      if (glob[i + 1] === '*') {
+        re += '.*';
+        i++;
+        // consume an optional trailing slash so "a/**" matches "a/b/c"
+        if (glob[i + 1] === '/') i++;
+      } else {
+        re += '[^/]*';
+      }
+    } else if (c === '?') {
+      re += '[^/]';
+    } else if ('\\^$.|+()[]{}'.includes(c)) {
+      re += '\\' + c;
+    } else {
+      re += c;
+    }
+  }
+  return new RegExp('^' + re + '$');
+}
+
+/** True if `relPath` (relative POSIX) is matched by any glob, including when a
+ *  glob names an ancestor directory ("test/fixtures" excludes everything under it). */
+export function matchesAnyGlob(relPath: string, globs: string[]): boolean {
+  for (const glob of globs) {
+    const g = glob.replace(/\/+$/, '');
+    if (globToRegExp(g).test(relPath)) return true;
+    // ancestor directory match: "test/fixtures" or "test/fixtures/**"
+    const dirPrefix = g.endsWith('/**') ? g.slice(0, -3) : g;
+    if (dirPrefix && (relPath === dirPrefix || relPath.startsWith(dirPrefix + '/'))) return true;
+  }
+  return false;
+}

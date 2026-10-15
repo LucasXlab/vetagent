@@ -1,5 +1,5 @@
 import type { Finding, Rule, ScanContext, ScanResult, TargetKind } from './types.js';
-import { absJoin, readText, relPosix, walkFiles } from './util.js';
+import { absJoin, matchesAnyGlob, readText, relPosix, walkFiles } from './util.js';
 import { secretsRule } from './rules/secrets.js';
 import { permissionsRule } from './rules/permissions.js';
 import { hooksRule } from './rules/hooks.js';
@@ -61,16 +61,19 @@ export function scoreFindings(findings: Finding[]): { score: number; grade: stri
 export interface ScanOptions {
   /** Roots to scan with their kind */
   targets: Array<{ root: string; kind: TargetKind }>;
+  /** Glob patterns (relative POSIX paths) to skip, e.g. "test/fixtures/**" */
+  exclude?: string[];
 }
 
-export function scanTargets(targets: ScanOptions['targets']): ScanResult {
+export function scanTargets(targets: ScanOptions['targets'], exclude: string[] = []): ScanResult {
   const started = Date.now();
   const allFindings: Finding[] = [];
   const scannedRoots: string[] = [];
   let filesScanned = 0;
 
   for (const target of targets) {
-    const absFiles = walkFiles(target.root);
+    const all = walkFiles(target.root);
+    const absFiles = all.filter((f) => !matchesAnyGlob(relPosix(target.root, f), exclude));
     filesScanned += absFiles.length;
     scannedRoots.push(target.root);
     const ctx = makeContext(target.root, target.kind, absFiles);

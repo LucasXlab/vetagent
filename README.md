@@ -47,6 +47,9 @@ npm install -g agentvet
 # Scan a specific directory (a repo, a copied .claude, a CI workspace):
 agentvet --path ./my-project
 
+# Skip paths (repeatable glob):
+agentvet --path ./my-project --exclude "vendor/**" --exclude "third_party/.claude"
+
 # Machine-readable output for CI / dashboards:
 agentvet --json
 

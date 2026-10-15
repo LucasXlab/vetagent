@@ -18,6 +18,7 @@ Options:
   --path <dir>   Scan a directory for project-level agent config (.claude, .mcp.json, CLAUDE.md...)
                  Default: current directory (if it has agent config) plus detected agent homes
   --homes-only   Only scan agent homes (~/.claude, ~/.codex, ...), skip the current directory
+  --exclude <g>  Skip paths matching a glob (repeatable), e.g. --exclude "test/fixtures/**"
   --json         Machine-readable output
   --strict       Exit with code 1 on medium findings too (default: high only)
   --no-color     Disable colored output
@@ -38,6 +39,7 @@ interface Args {
   json: boolean;
   strict: boolean;
   noColor: boolean;
+  exclude: string[];
   help: boolean;
   version: boolean;
 }
@@ -48,6 +50,7 @@ export function parseArgs(argv: string[]): Args {
     json: false,
     strict: false,
     noColor: false,
+    exclude: [],
     help: false,
     version: false,
   };
@@ -69,6 +72,9 @@ export function parseArgs(argv: string[]): Args {
       case '--no-color':
         args.noColor = true;
         break;
+      case '--exclude':
+        if (argv[i + 1]) args.exclude.push(argv[++i]);
+        break;
       case '-h':
       case '--help':
         args.help = true;
@@ -80,6 +86,8 @@ export function parseArgs(argv: string[]): Args {
       default:
         if (a.startsWith('--path=')) {
           args.path = a.slice('--path='.length);
+        } else if (a.startsWith('--exclude=')) {
+          args.exclude.push(a.slice('--exclude='.length));
         } else {
           process.stderr.write(`Unknown option: ${a}\n`);
           args.help = true;
@@ -148,7 +156,7 @@ function main(): void {
     process.exit(0);
   }
 
-  const result = scanTargets(targets);
+  const result = scanTargets(targets, args.exclude);
 
   if (args.json) {
     process.stdout.write(toJson(result) + '\n');
