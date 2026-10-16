@@ -104,7 +104,7 @@ Agent configs became the new `.env`: keys, shell permissions and third-party ski
 
 ```bash
 npm install
-npm test        # 23 tests, no network
+npm test        # 33 tests, no network
 npm run build   # tsc → dist/
 node dist/cli.js --path demo/fixtures
 ```
