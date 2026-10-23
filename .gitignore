@@ -2,3 +2,10 @@ node_modules/
 dist/
 *.tgz
 demo/.frames/
+
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store

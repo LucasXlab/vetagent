@@ -1,5 +1,5 @@
 name: Bug report
-description: agentvet missed something, flagged something wrong, or crashed
+description: vetagent missed something, flagged something wrong, or crashed
 labels: [bug]
 body:
   - type: textarea
@@ -12,8 +12,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: agentvet version
-      placeholder: "1.0.0 (agentvet --version)"
+      label: vetagent version
+      placeholder: "1.0.0 (vetagent --version)"
     validations:
       required: true
   - type: dropdown

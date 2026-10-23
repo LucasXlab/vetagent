@@ -9,10 +9,10 @@ import { renderReport, toJson, colorsEnabled } from './report.js';
 
 const VERSION = '1.0.0';
 
-const HELP = `agentvet v${VERSION} — vet your AI coding agent setup in one command.
+const HELP = `vetagent v${VERSION} — vet your AI coding agent setup in one command.
 
 Usage:
-  agentvet [options]
+  vetagent [options]
 
 Options:
   --path <dir>   Scan a directory for project-level agent config (.claude, .mcp.json, CLAUDE.md...)
@@ -29,7 +29,7 @@ Exit codes:
   0  no high-severity findings
   1  at least one high-severity finding (or medium with --strict)
 
-agentvet runs entirely on your machine. It reads config files, never writes,
+vetagent runs entirely on your machine. It reads config files, never writes,
 and makes no network requests.
 `;
 
@@ -150,7 +150,7 @@ function main(): void {
     } else {
       process.stdout.write(
         '\n  No agent configuration found (looked in the current directory and ~/.claude, ~/.codex, ...).\n' +
-          '  Run agentvet inside a project with agent config, or point it at one with --path <dir>.\n\n',
+          '  Run vetagent inside a project with agent config, or point it at one with --path <dir>.\n\n',
       );
     }
     process.exit(0);

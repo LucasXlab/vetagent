@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
@@ -22,7 +25,7 @@ jobs:
       - run: npm run build
       - run: npm test
 
-  # Dogfooding: agentvet must pass its own audit on its own repo.
+  # Dogfooding: vetagent must pass its own audit on its own repo.
   self-scan:
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +35,7 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
-      # Dogfooding: agentvet must pass its own audit on its own repo.
+      # Dogfooding: vetagent must pass its own audit on its own repo.
       # (test files contain planted example key formats — excluded like any
       #  other project would allowlist its fixtures)
       - run: node dist/cli.js --path . --strict --exclude "test/**" --exclude "demo/**"

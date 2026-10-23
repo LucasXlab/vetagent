@@ -1,4 +1,4 @@
-# agentvet v1.0.0 — "the npm audit your agent setup never had"
+# vetagent v1.0.0 — "the npm audit your agent setup never had"
 
 First public release. One command to audit the configuration layer your AI
 coding agents actually execute — `~/.claude`, `~/.codex`, `~/.config/opencode`,
@@ -7,8 +7,8 @@ project-level `.claude/`, `.mcp.json`, `CLAUDE.md` / `AGENTS.md`, and skills.
 ## Install
 
 ```bash
-npx agentvet            # zero-install, Node 18+
-npm install -g agentvet # or global
+npx vetagent            # zero-install, Node 18+
+npm install -g vetagent # or global
 ```
 
 ## What it checks
@@ -39,7 +39,7 @@ matters, and a concrete fix.
 
 ## Not in v1.0.0 (roadmap)
 
-`--baseline` to pin accepted findings, `agentvet fix` auto-remediation, more
+`--baseline` to pin accepted findings, `vetagent fix` auto-remediation, more
 agent platforms as community rules, `--format sarif`, token-cost summary.
 
 ## Known limitations
@@ -51,4 +51,4 @@ systems.
 
 Feedback welcome — especially agent configs that *should* have been flagged
 but weren't. Good first issues are labeled
-[`good first issue`](https://github.com/LucasYanzy/agentvet/labels/good%20first%20issue).
+[`good first issue`](https://github.com/LucasYanzy/vetagent/labels/good%20first%20issue).

@@ -1,116 +1,98 @@
-# agentvet
+<p align="center"><img src="assets/logo.svg" width="72" height="72" alt="vetagent logo"></p>
+<h1 align="center">vetagent</h1>
+<p align="center"><strong>Review agent configurations before they become execution permissions.</strong></p>
 
-**Vet your AI coding agent setup in one command.** agentvet audits the config behind Claude Code, Codex and friends — leaked API keys, `Bash(*)` permissions, hooks that pipe the internet into your shell, unpinned MCP servers, and skills with instruction-override language — then tells you exactly what to fix.
+[![CI](https://github.com/LucasYanzy/vetagent/actions/workflows/ci.yml/badge.svg)](https://github.com/LucasYanzy/vetagent/actions/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/source-v1.0.0-6b7280.svg)](https://github.com/LucasYanzy/vetagent/blob/main/package.json) ![Runtime](https://img.shields.io/badge/Node.js-18%2B-3776ab.svg) [![Stars](https://img.shields.io/github/stars/LucasYanzy/vetagent?style=flat)](https://github.com/LucasYanzy/vetagent/stargazers)
 
-<p align="center">
-  <img src="docs/demo.gif" alt="agentvet scanning a sloppy .claude directory: score F, 3 high-severity findings, each with a fix" width="760" />
-</p>
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/agentvet"><img src="https://img.shields.io/npm/v/agentvet" alt="npm"></a>
-  <a href="https://github.com/LucasYanzy/agentvet/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/LucasYanzy/agentvet/ci.yml?branch=main&label=ci" alt="CI"></a>
-  <img src="https://img.shields.io/badge/tests-33%20passing-brightgreen" alt="tests">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT"></a>
-  <img src="https://img.shields.io/badge/network-zero%20requests-gray" alt="no network">
-</p>
+![Real CLI output on synthetic fixtures](assets/demo.gif)
 
-```bash
-npx agentvet
-```
+The demo is captured from the real CLI using synthetic data. [Transcript](demo/terminal.txt) · regenerate with `python3 scripts/demo.py`.
 
-That's the whole setup. agentvet finds your agent homes (`~/.claude`, `~/.codex`, `~/.config/opencode`, …) and the current project, scans them read-only, and prints a graded report. Exit code `1` on high-severity findings, so it drops straight into CI.
+## Why
 
----
+Agent configuration mixes credentials, shell permissions, hooks and third-party tools. vetagent reads those files and reports suspicious patterns with locations and suggested fixes, without executing hooks.
 
-## What it checks
+| Start with | Good for | Where vetagent helps |
+|---|---|---|
+| Manual configuration review | Understand local intent | vetagent adds repeatable pattern checks and file locations. |
+| A source-code linter | Check language rules | vetagent focuses on agent configuration and permissions. |
 
-| Area | Examples of what it finds |
-|------|---------------------------|
-| 🔑 **Secrets** | `sk-ant-…`, `ghp_…`, `AKIA…`, OpenRouter/DeepSeek/npm keys, private key blocks, credentials pasted into `settings.json` or MCP `env` |
-| 🛡️ **Permissions** | `Bash(*)`, `mcp__*`, `Bash(curl:*)`, `defaultMode: bypassPermissions`, 40+ entry allow-lists |
-| 🪝 **Hooks** | `curl … \| sh` in SessionStart/Stop hooks, command substitution piped to `nc`, possible exfiltration patterns |
-| 🔌 **MCP servers** | unpinned `npx`/`uvx` packages, remote `http://` transports, `-y` auto-installs, inline credentials |
-| 📦 **Skills** | instruction-override language ("ignore all previous instructions"), network instructions, oversized skills, 15+ skill hoarding |
-| 🧹 **Hygiene** | `.env` not in `.gitignore`, 30k-char `CLAUDE.md`, settings that may be committed |
-
-Every finding carries the file, the line, **redacted** evidence, why it matters, and a concrete fix.
-
-## Install & use
+## Quick start
 
 ```bash
-# Zero-install (any Node 18+):
-npx agentvet
-
-# Or install globally:
-npm install -g agentvet
-
-# Scan a specific directory (a repo, a copied .claude, a CI workspace):
-agentvet --path ./my-project
-
-# Skip paths (repeatable glob):
-agentvet --path ./my-project --exclude "vendor/**" --exclude "third_party/.claude"
-
-# Machine-readable output for CI / dashboards:
-agentvet --json
-
-# Fail the build on medium findings too:
-agentvet --strict
+git clone https://github.com/LucasYanzy/vetagent.git && cd vetagent
+npm ci && npm run build
+python3 scripts/demo.py
 ```
 
-Exit codes: `0` clean, `1` high-severity findings (or medium with `--strict`), `2` usage error.
+The repository, package metadata and primary executable now use `vetagent`; `agentvet` remains a compatibility executable alias in a local package install. The source build above does not depend on an npm release. A finding exit code of **1** is expected in the bundled demo. Use `node dist/cli.js --path ./my-project` for your own files.
 
-## How it compares
+## Features
 
-| | agentvet | gitleaks / trufflehog | vendor "security review" skills | manual review |
-|---|:---:|:---:|:---:|:---:|
-| Understands agent config semantics (`settings.json`, `.mcp.json`, skills, hooks) | ✅ | ❌ generic | ⚠️ code only | ⚠️ you |
-| One command, zero config, read-only | ✅ | ⚠️ needs rules/repo | ✅ | ❌ |
-| Graded score + per-finding fix | ✅ | ⚠️ raw findings | ❌ | ❌ |
-| CI gate (exit codes, `--json`) | ✅ | ✅ | ❌ | ❌ |
-| 100% local — no network, no telemetry, no account | ✅ | ✅ | ⚠️ model calls | ✅ |
-| Finds `Bash(*)`-style permission blowouts | ✅ | ❌ | ❌ | ⚠️ |
+### Find secret patterns
 
-agentvet is **not** a malware scanner, not a replacement for your model provider's safety systems, and not a code linter. It is a hygiene and exposure audit for the configuration layer that agents actually execute.
+Look for supported credential formats and private-key blocks; evidence is redacted in reports.
 
-## FAQ
+### Review permissions
 
-**Is it safe to run? Does anything leave my machine?**
-agentvet is read-only and makes zero network requests. There is no telemetry, no account, no phone-home. The source is ~1,500 lines of dependency-free TypeScript — read it before you run it, that's the point.
+Flag broad shell permissions, bypass modes and other high-exposure settings.
 
-**It flagged something that is intentional.**
-Pass `--path` to scope scans, edit your config, or (for a known-acceptable case) just acknowledge it — agentvet never modifies files. A future `--baseline` flag will let you pin accepted findings (see roadmap).
+### Inspect hooks and MCP
 
-**Why is my score F with only 3 findings?**
-High-severity findings cost 15 points each. A leaked live credential is an emergency, not a style nit.
+Detect patterns such as downloaded shell scripts, unpinned package runners and inline credentials.
 
-**Which agents are supported?**
-Claude Code, Codex CLI, opencode, Gemini CLI, Hermes, OpenClaw homes, plus project-level `.claude/`, `.mcp.json`, `CLAUDE.md` / `AGENTS.md`. More platforms are rules, not rewrites — PRs welcome.
+### Check instruction files
 
-**Does it work on Windows?**
-Yes — everything is plain file parsing.
+Inspect skills and agent instructions for risky patterns and hygiene issues. This is pattern matching, not a proof of safety.
 
-**Why did you build this?**
-Agent configs became the new `.env`: keys, shell permissions and third-party skill packs that execute on your machine — with none of the review that infrastructure used to get. agentvet is the `npm audit` that layer never had.
+![CLI result](assets/demo.png)
 
-## Roadmap
+## Usage
 
-- [ ] `--baseline` to pin accepted findings
-- [ ] `agentvet fix` for auto-remediable findings (gitignore, unpinned→pinned suggestions)
-- [ ] More agent platforms (Cline, Aider, Crush) as community rules
-- [ ] `--format sarif` for GitHub code scanning
-- [ ] Token-cost summary from local session logs (opt-in)
+```bash
+node dist/cli.js --path ./my-project
+node dist/cli.js --path ./my-project --json
+node dist/cli.js --path ./my-project --strict
+node dist/cli.js --path ./my-project --exclude "vendor/**"
+```
+
+## Architecture
+
+```mermaid
+flowchart LR
+A[Explicit path or detected config homes] --> B[Read supported text files]
+B --> C[Secret / permission / hook / MCP / skill rules]
+C --> D[Redacted findings and score]
+D --> E[Terminal or JSON]
+D --> F[Exit status for CI]
+```
+
+## Privacy and limits
+
+The scanner reads configuration files without application network calls or writes. With no `--path`, it discovers supported agent homes and may read personal configuration. Start with an explicit path. Reports redact matched secret evidence but can still include filenames and other context; review before sharing. Installation downloads development dependencies. See [PRIVACY.md](PRIVACY.md) for data boundaries.
 
 ## Development
 
 ```bash
-npm install
-npm test        # 33 tests, no network
-npm run build   # tsc → dist/
-node dist/cli.js --path demo/fixtures
+npm ci
+npm run typecheck
+npm run build
+npm test
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Good first issues are labeled [`good first issue`](https://github.com/LucasYanzy/agentvet/labels/good%20first%20issue).
+The demo uses a temporary fixture and does not inspect your personal repositories or agent homes.
+
+## Roadmap
+
+- [ ] Add accepted-finding baselines.
+- [ ] Add SARIF export and more configuration formats.
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md). Report reproducible problems in [Issues](https://github.com/LucasYanzy/vetagent/issues). Follow [SECURITY.md](SECURITY.md) for sensitive reports.
 
 ## License
 
-MIT © agentvet contributors
+[MIT](LICENSE).

@@ -1,15 +1,17 @@
 {
-  "name": "agentvet",
+  "name": "vetagent",
   "version": "1.0.0",
-  "description": "Vet your AI coding agent setup in one command — secrets, permissions, hooks, MCP servers, skills and hygiene, 100% local.",
+  "description": "Vet your AI coding agent setup in one command \u2014 secrets, permissions, hooks, MCP servers, skills and hygiene, 100% local.",
   "license": "MIT",
   "type": "module",
   "bin": {
+    "vetagent": "dist/cli.js",
     "agentvet": "dist/cli.js"
   },
   "files": [
     "dist",
     "README.md",
+    "README.zh-CN.md",
     "LICENSE"
   ],
   "engines": {
@@ -38,5 +40,13 @@
     "mcp",
     "secrets",
     "cli"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasYanzy/vetagent.git"
+  },
+  "homepage": "https://github.com/LucasYanzy/vetagent#readme",
+  "bugs": {
+    "url": "https://github.com/LucasYanzy/vetagent/issues"
+  }
 }

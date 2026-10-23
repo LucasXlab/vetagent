@@ -58,7 +58,7 @@ export function renderReport(result: ScanResult, opts: { color: boolean }): stri
   const counts = countBy(findings);
 
   lines.push('');
-  lines.push(paint('  agentvet', 'bold', opts.color) + paint('  — AI agent setup audit', 'dim', opts.color));
+  lines.push(paint('  vetagent', 'bold', opts.color) + paint('  — AI agent setup audit', 'dim', opts.color));
   lines.push('');
   lines.push(
     `  Score: ${paint(result.grade + ' (' + result.score + '/100)', result.score >= 75 ? 'green' : result.score >= 40 ? 'yellow' : 'red', opts.color)}` +
@@ -107,7 +107,7 @@ export function renderReport(result: ScanResult, opts: { color: boolean }): stri
 export function toJson(result: ScanResult): string {
   return JSON.stringify(
     {
-      tool: 'agentvet',
+      tool: 'vetagent',
       version: 1,
       score: result.score,
       grade: result.grade,

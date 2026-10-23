@@ -1,9 +1,9 @@
-$ agentvet --path demo/fixtures
+$ node dist/cli.js --path demo/fixtures --no-color
 
 
-  agentvet  — AI agent setup audit
+  vetagent  — AI agent setup audit
 
-  Score: F (39/100)   files: 3   targets: 1   9ms
+  Score: F (39/100)   files: 3   targets: 1   370ms
   Findings: 3 high · 2 medium · 1 low · 1 info
 
   HIGH (3)
@@ -44,15 +44,17 @@ $ agentvet --path demo/fixtures
 
   ▸ MCP server "filesystem" auto-confirms package installs (-y)
     .claude/.mcp.json
-    evidence: -y @modelcontextprotocol/server-filesystem@0.6.2 /Users/me/projects
+    evidence: -y @modelcontextprotocol/server-filesystem@0.6.2 /tmp/demo-user/projects
     why: The -y flag suppresses install prompts, hiding what gets downloaded.
     fix: Remove -y and install the package explicitly with a pinned version.
 
   INFO (1)
 
   ▸ 1 skill scanned, none flagged
-    ~/NO/agentvet/demo/fixtures
+    ~/NO/repo-maintenance/2026-10-23/repos/vetagent/demo/fixtures
     why: No network instructions or override language detected in your skills.
     fix: No action needed.
 
   ⚠ 3 high-severity finding(s). Rotate any exposed credentials now.
+
+Exit code: 1 (expected: deliberately unsafe demo configuration)
