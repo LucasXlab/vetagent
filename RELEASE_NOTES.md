@@ -51,4 +51,4 @@ systems.
 
 Feedback welcome — especially agent configs that *should* have been flagged
 but weren't. Good first issues are labeled
-[`good first issue`](https://github.com/LucasYanzy/vetagent/labels/good%20first%20issue).
+[`good first issue`](https://github.com/LucasXlab/vetagent/labels/good%20first%20issue).

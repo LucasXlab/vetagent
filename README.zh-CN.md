@@ -2,7 +2,7 @@
 <h1 align="center">vetagent</h1>
 <p align="center"><strong>在代理配置变成实际执行权限之前，先检查它。</strong></p>
 
-[![CI](https://github.com/LucasYanzy/vetagent/actions/workflows/ci.yml/badge.svg)](https://github.com/LucasYanzy/vetagent/actions/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/source-v1.0.0-6b7280.svg)](https://github.com/LucasYanzy/vetagent/blob/main/package.json) ![Runtime](https://img.shields.io/badge/Node.js-18%2B-3776ab.svg) [![Stars](https://img.shields.io/github/stars/LucasYanzy/vetagent?style=flat)](https://github.com/LucasYanzy/vetagent/stargazers)
+[![CI](https://github.com/LucasXlab/vetagent/actions/workflows/ci.yml/badge.svg)](https://github.com/LucasXlab/vetagent/actions/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/source-v1.0.0-6b7280.svg)](https://github.com/LucasXlab/vetagent/blob/main/package.json) ![Runtime](https://img.shields.io/badge/Node.js-18%2B-3776ab.svg) [![Stars](https://img.shields.io/github/stars/LucasYanzy/vetagent?style=flat)](https://github.com/LucasXlab/vetagent/stargazers)
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
@@ -17,7 +17,7 @@
 ## 快速开始
 
 ```bash
-git clone https://github.com/LucasYanzy/vetagent.git && cd vetagent
+git clone https://github.com/LucasXlab/vetagent.git && cd vetagent
 npm ci && npm run build
 python3 scripts/demo.py
 ```

@@ -43,10 +43,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LucasYanzy/vetagent.git"
+    "url": "git+https://github.com/LucasXlab/vetagent.git"
   },
-  "homepage": "https://github.com/LucasYanzy/vetagent#readme",
+  "homepage": "https://github.com/LucasXlab/vetagent#readme",
   "bugs": {
-    "url": "https://github.com/LucasYanzy/vetagent/issues"
+    "url": "https://github.com/LucasXlab/vetagent/issues"
   }
 }

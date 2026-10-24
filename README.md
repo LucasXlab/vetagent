@@ -2,7 +2,7 @@
 <h1 align="center">vetagent</h1>
 <p align="center"><strong>Review agent configurations before they become execution permissions.</strong></p>
 
-[![CI](https://github.com/LucasYanzy/vetagent/actions/workflows/ci.yml/badge.svg)](https://github.com/LucasYanzy/vetagent/actions/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/source-v1.0.0-6b7280.svg)](https://github.com/LucasYanzy/vetagent/blob/main/package.json) ![Runtime](https://img.shields.io/badge/Node.js-18%2B-3776ab.svg) [![Stars](https://img.shields.io/github/stars/LucasYanzy/vetagent?style=flat)](https://github.com/LucasYanzy/vetagent/stargazers)
+[![CI](https://github.com/LucasXlab/vetagent/actions/workflows/ci.yml/badge.svg)](https://github.com/LucasXlab/vetagent/actions/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/source-v1.0.0-6b7280.svg)](https://github.com/LucasXlab/vetagent/blob/main/package.json) ![Runtime](https://img.shields.io/badge/Node.js-18%2B-3776ab.svg) [![Stars](https://img.shields.io/github/stars/LucasYanzy/vetagent?style=flat)](https://github.com/LucasXlab/vetagent/stargazers)
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
@@ -22,7 +22,7 @@ Agent configuration mixes credentials, shell permissions, hooks and third-party 
 ## Quick start
 
 ```bash
-git clone https://github.com/LucasYanzy/vetagent.git && cd vetagent
+git clone https://github.com/LucasXlab/vetagent.git && cd vetagent
 npm ci && npm run build
 python3 scripts/demo.py
 ```
@@ -91,7 +91,7 @@ The demo uses a temporary fixture and does not inspect your personal repositorie
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md). Report reproducible problems in [Issues](https://github.com/LucasYanzy/vetagent/issues). Follow [SECURITY.md](SECURITY.md) for sensitive reports.
+Read [CONTRIBUTING.md](CONTRIBUTING.md). Report reproducible problems in [Issues](https://github.com/LucasXlab/vetagent/issues). Follow [SECURITY.md](SECURITY.md) for sensitive reports.
 
 ## License
 
